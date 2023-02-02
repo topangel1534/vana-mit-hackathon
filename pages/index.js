@@ -33,20 +33,22 @@ export default function Home() {
   // const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [generatedImages, setGeneratedImages] = useState([])
-  const prompt = imageText ? `a portrait of {target_token} in the style of ${imageText}` : 'Prompt not ready'
+  const [generatedImages, setGeneratedImages] = useState([]);
+  const prompt = imageText
+    ? `a portrait of {target_token} in the style of ${imageText}`
+    : "Prompt not ready";
 
   const callTextToImageAPI = async (event) => {
     event.preventDefault();
     setIsLoading(true);
 
     try {
-      console.log('About to call API')
+      console.log("About to call API");
       const urls = await vanaApiPost(`images/generations`, {
         prompt: prompt,
         n: 4,
       });
-      setGeneratedImages(urls)
+      setGeneratedImages(urls);
     } catch (error) {
       setErrorMessage("An error occurred while generating the image");
     }
@@ -127,14 +129,21 @@ export default function Home() {
                   {imageUrl && (
                     <>
                       <img src={imageUrl} alt="Uploaded Image" />
+                      <div className="progressContainer animateProgress">
+                        <div className="progressBar" />
+                      </div>
                       <div className="uploaded-image-detail">
                         <div className="caption">
                           Uploaded Image Description
                         </div>
                         <div className="description">
-                          {prediction && prediction.status === "succeeded"
-                            ? imageText
-                            : "Loading..."}
+                          {prediction && prediction.status === "succeeded" ? (
+                            imageText
+                          ) : (
+                            <div className="progressContainer animateProgress">
+                              <div className="progressBar" />
+                            </div>
+                          )}
                         </div>
                       </div>
                     </>
@@ -159,7 +168,6 @@ export default function Home() {
 
                 {isLoading && <p>Loading...</p>}
                 {errorMessage && <p>Error: {errorMessage}</p>}
-
               </div>
 
               {/** Show the images a user has created */}
@@ -170,7 +178,6 @@ export default function Home() {
               </div>
             </div>
           )}
-
           {/* User doesn't have a trained model*/}
           {user.exhibits.length === 0 && (
             <p>

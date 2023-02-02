@@ -235,3 +235,39 @@ button:hover {
   font-weight: 500;
   color: rgb(49, 49, 49);
 }
+
+.progressContainer {
+  position: absolute;
+  margin: 0;
+  width: 60%;
+  z-index: 1;
+  opacity: 1;
+  height: 100%;
+}
+.progressContainer::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 1%;
+  background-color: bisque;
+  transform-origin: left;
+  transition: width 12s ease;
+  z-index: -1;
+}
+.progressContainer.animateProgress::after {
+  width: 0;
+  animation: transit 10s linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-delay: 0.1s;
+}
+@keyframes transit {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 60%;
+  }
+}
